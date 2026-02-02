@@ -1,5 +1,4 @@
 from time import time
-from typing import Dict
 import easyocr
 import json
 
