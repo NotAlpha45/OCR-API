@@ -47,8 +47,8 @@ class OcrService:
                 average_confidence=0.0,
             )
 
-        texts = [text for (bbox, text, conf) in image_read_results]
-        confidences = [conf for (bbox, text, conf) in image_read_results]
+        texts = [text for (_, text, _) in image_read_results]
+        confidences = [conf for (_, _, conf) in image_read_results]
         average_confidence = sum(confidences) / len(confidences)
         processing_time = time.time() - start_time
 
