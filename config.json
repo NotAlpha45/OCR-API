@@ -13,8 +13,11 @@
         ".jfif"
     ],
     "EASY_OCR": {
-        "LANGUAGES": ["en"],
+        "LANGUAGES": [
+            "en"
+        ],
         "GPU": false,
-        "MODEL_STORAGE_DIRECTORY": "models/"
+        "MODEL_STORAGE_DIRECTORY": "models/",
+        "BATCH_SIZE": 2
     }
 }
