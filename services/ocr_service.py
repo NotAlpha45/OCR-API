@@ -47,18 +47,20 @@ class OcrService:
 
         if not image_read_results:
             return OcrOutput(
-                texts=[],
-                processing_time=time.time() - start_time,
-                average_confidence=0.0,
+                success=False,
+                text="",
+                processing_time_ms=(time.time() - start_time) * 1000,
+                confidence=0.0,
             )
 
-        texts = [text for (_, text, _) in image_read_results]
+        text = "\n".join([text for (_, text, _) in image_read_results])
         confidences = [conf for (_, _, conf) in image_read_results]
         average_confidence = sum(confidences) / len(confidences)
-        processing_time = time.time() - start_time
+        processing_time_ms = (time.time() - start_time) * 1000
 
         return OcrOutput(
-            texts=texts,
-            processing_time=processing_time,
-            average_confidence=average_confidence,
+            success=True,
+            text=text,
+            processing_time_ms=processing_time_ms,
+            confidence=average_confidence,
         )

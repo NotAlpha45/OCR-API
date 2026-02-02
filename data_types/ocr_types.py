@@ -2,9 +2,10 @@ from pydantic import BaseModel
 
 
 class OcrOutput(BaseModel):
-    texts: list[str]
-    processing_time: float
-    average_confidence: float
+    success: bool
+    text: str
+    processing_time_ms: float
+    confidence: float
 
 
 class ImageValidationOutput(BaseModel):
