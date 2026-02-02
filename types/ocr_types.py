@@ -5,3 +5,8 @@ class OcrOutput(BaseModel):
     texts: list[str]
     processing_time: float
     average_confidence: float
+
+
+class ImageValidationOutput(BaseModel):
+    is_valid: bool
+    reason: str | None = None

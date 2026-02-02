@@ -1,6 +1,6 @@
 {
     "MAX_FILE_SIZE_BYTES": 10485760,
-    "ALLOWED_FILE_TYPES": [
+    "ALLOWED_FORMATS": [
         "image/jpeg",
         "image/jpg",
         "image/png",

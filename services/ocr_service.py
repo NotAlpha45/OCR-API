@@ -5,8 +5,14 @@ import json
 from exceptions.ocr_exceptions import OcrConfigException
 from types.ocr_types import OcrOutput
 
-with open("config.json", "r") as config_file:
-    config = json.load(config_file)
+
+try:
+    with open("config.json", "r") as config_file:
+        config = json.load(config_file)
+except FileNotFoundError:
+    raise OcrConfigException("Configuration file 'config.json' not found.")
+except json.JSONDecodeError:
+    raise OcrConfigException("Configuration file 'config.json' contains invalid JSON.")
 
 
 class OcrService:
