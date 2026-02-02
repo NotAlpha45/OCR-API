@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from controllers.ocr_controller import ocr_router
 
 
 app = FastAPI(
@@ -19,3 +20,7 @@ async def root():
             "/docs": "GET - API documentation",
         },
     }
+
+
+# Include the OCR router
+app.include_router(ocr_router)
