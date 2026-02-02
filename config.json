@@ -1,0 +1,23 @@
+{
+    "MAX_FILE_SIZE_BYTES": 10485760,
+    "ALLOWED_FORMATS": [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/jfif"
+    ],
+    "ALLOWED_EXTENSIONS": [
+        ".jpeg",
+        ".jpg",
+        ".png",
+        ".jfif"
+    ],
+    "EASY_OCR": {
+        "LANGUAGES": [
+            "en"
+        ],
+        "GPU": false,
+        "MODEL_STORAGE_DIRECTORY": "models/",
+        "BATCH_SIZE": 2
+    }
+}
