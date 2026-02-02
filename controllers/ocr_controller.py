@@ -1,5 +1,6 @@
 from fastapi import APIRouter, File, UploadFile
 
+from data_types.ocr_types import OcrOutput
 from services.ocr_service import OcrService
 
 
@@ -8,7 +9,7 @@ ocr_service = OcrService()
 
 
 @ocr_router.post("/extract-text")
-async def extract_text(image_file: UploadFile = File(...)):
+async def extract_text(image_file: UploadFile = File(...)) -> OcrOutput:
     """
     Extract text from uploaded image using OCR.
 
@@ -17,4 +18,5 @@ async def extract_text(image_file: UploadFile = File(...)):
     """
     image_content = await image_file.read()
     ocr_output = ocr_service.extract_text(image_content)
+
     return ocr_output

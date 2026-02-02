@@ -22,5 +22,6 @@ async def root():
     }
 
 
+
 # Include the OCR router
 app.include_router(ocr_router)
