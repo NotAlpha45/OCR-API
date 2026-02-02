@@ -1,9 +1,9 @@
-from time import time
+import time
 import easyocr
 import json
 
+from data_types.ocr_types import OcrOutput
 from exceptions.ocr_exceptions import OcrConfigException
-from models.ocr_types import OcrOutput
 
 
 try:
