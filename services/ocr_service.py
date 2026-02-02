@@ -3,7 +3,7 @@ import easyocr
 import json
 
 from exceptions.ocr_exceptions import OcrConfigException
-from types.ocr_types import OcrOutput
+from models.ocr_types import OcrOutput
 
 
 try:

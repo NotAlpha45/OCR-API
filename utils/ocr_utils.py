@@ -1,7 +1,7 @@
 from fastapi import UploadFile
 import json
 from services.ocr_service import OcrConfigException
-from types.ocr_types import ImageValidationOutput
+from models.ocr_types import ImageValidationOutput
 from PIL import Image, UnidentifiedImageError
 
 

@@ -3,7 +3,7 @@ from fastapi import APIRouter, File, UploadFile
 from services.ocr_service import OcrService
 
 
-ocr_router = APIRouter("ocr", prefix="/ocr", tags=["OCR"])
+ocr_router = APIRouter(prefix="/ocr", tags=["OCR"])
 ocr_service = OcrService()
 
 
