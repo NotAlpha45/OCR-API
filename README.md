@@ -365,7 +365,7 @@ except json.JSONDecodeError:
 
 | Feature | EasyOCR | Tesseract |
 |---------|---------|-----------|
-| **Accuracy** | ⭐⭐⭐⭐⭐ (90-95%) | ⭐⭐⭐⭐ (80-90%) |
+| **Accuracy** | 90-95% | 80-90% |
 | **Speed** | Slower (2-5s) | Faster (0.5-1.5s) |
 | **Memory** | 1.5-2GB RAM | 300-500MB RAM |
 | **Technology** | Deep Learning (CNN) | Rule-based + LSTM |
@@ -433,7 +433,6 @@ except json.JSONDecodeError:
 
 **6. "Model not found" error (EasyOCR)**
 - Ensure `models/` directory exists with `.pth` files
-- Download models: https://github.com/JaidedAI/EasyOCR#models
 
 ### Development Tips
 
