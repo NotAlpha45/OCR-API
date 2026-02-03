@@ -4,8 +4,9 @@ FROM python:3.12.4-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies required for EasyOCR and image processing
+# Install system dependencies required for EasyOCR, Tesseract, and uv
 RUN apt-get update && apt-get install -y \
+    curl \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
@@ -16,11 +17,14 @@ RUN apt-get update && apt-get install -y \
     tesseract-ocr-eng \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements file
-COPY requirements.txt .
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Install Python dependencies
-RUN pip install -r requirements.txt --no-cache-dir
+# Copy dependency files
+COPY pyproject.toml uv.lock* ./
+
+# Install Python dependencies using uv
+RUN uv sync --frozen --no-dev
 
 # Copy application code
 COPY . .
@@ -31,5 +35,5 @@ RUN mkdir -p /root/.EasyOCR/model
 # Expose the port FastAPI will run on
 EXPOSE 8000
 
-# Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run the application using uv
+CMD ["uv", "run", "--no-dev", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

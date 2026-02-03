@@ -39,7 +39,7 @@ class PytesseractOcrService(BaseOcrService):
             image = Image.open(BytesIO(image_content))
 
             # Get language configuration
-            lang = config.get("TESSERACT", {}).get("LANGUAGE", "eng")
+            lang = config["TESSERACT"]["LANGUAGE"] or "eng"
 
             # Extract text with confidence data
             data = pytesseract.image_to_data(
