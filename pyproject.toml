@@ -8,4 +8,5 @@ dependencies = [
     "easyocr>=1.7.2",
     "fastapi[standard]>=0.128.0",
     "pillow>=12.1.0",
+    "pytesseract>=0.3.13",
 ]

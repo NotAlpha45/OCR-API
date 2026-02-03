@@ -1,1 +1,1 @@
-__all__ = ["ocr_service"]
+__all__ = ["ocr_service", "ocr_service_factory", "easyocr_service", "pytesseract_service"]

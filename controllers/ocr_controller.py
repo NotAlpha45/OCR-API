@@ -2,7 +2,7 @@ from fastapi import APIRouter, File, HTTPException, UploadFile
 
 from data_types.ocr_types import OcrOutput
 from exceptions.ocr_exceptions import OcrConfigException
-from services.ocr_service import OcrService
+from services.ocr_service_factory import OcrServiceFactory
 from utils.ocr_utils import (
     validate_image_input,
     validate_image_input,
@@ -10,7 +10,6 @@ from utils.ocr_utils import (
 
 
 ocr_router = APIRouter(prefix="/ocr", tags=["OCR"])
-ocr_service = OcrService()
 
 
 @ocr_router.post("/extract-text")
@@ -33,6 +32,15 @@ async def extract_text(image_file: UploadFile = File(...)) -> OcrOutput:
 
     except OcrConfigException as e:
         return HTTPException(
+            status_code=500,
+            detail=e.message,
+        )
+
+    # Get OCR service from factory (based on config)
+    try:
+        ocr_service = OcrServiceFactory.get_service()
+    except OcrConfigException as e:
+        raise HTTPException(
             status_code=500,
             detail=e.message,
         )
