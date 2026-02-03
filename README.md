@@ -40,7 +40,36 @@ A FastAPI-based OCR service that extracts text from images using pluggable OCR e
 
 ## Installation
 
-### Local Setup (uv)
+### Docker Setup (Recommended)
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/NotAlpha45/OCR-API.git
+cd OCR-API
+```
+
+**2. Configure OCR engine**
+
+Edit `config.json` to select your engine (see [Configuration](#configuration))
+
+**3. Build and run**
+
+```bash
+# Build and start in detached mode
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop service
+docker-compose down
+```
+
+Access the API at http://localhost:8000
+
+
+### Local Setup With UV
 
 **1. Install uv (if not already installed)**
 
@@ -90,33 +119,6 @@ Access the API at:
 - **Interactive Docs**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 
-### Docker Setup
-
-**1. Clone the repository**
-
-```bash
-git clone https://github.com/NotAlpha45/OCR-API.git
-cd OCR-API
-```
-
-**2. Configure OCR engine**
-
-Edit `config.json` to select your engine (see [Configuration](#configuration))
-
-**3. Build and run**
-
-```bash
-# Build and start in detached mode
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop service
-docker-compose down
-```
-
-Access the API at http://localhost:8000
 
 ## Configuration
 
@@ -176,6 +178,15 @@ uv run fastapi dev
     curl -X POST "http://localhost:8000/ocr/extract-text" \
     -H "accept: application/json" \
     -H "Content-Type: multipart/form-data" \
+    -F "image_file=@/path/to/image.jpg"
+```
+
+Note, if you are using windows, cURL will look like this:
+
+```shell
+    curl.exe -X POST "http://localhost:8000/ocr/extract-text" `
+    -H "accept: application/json" `
+    -H "Content-Type: multipart/form-data" `
     -F "image_file=@/path/to/image.jpg"
 ```
 
@@ -381,29 +392,8 @@ except json.JSONDecodeError:
 
 | Configuration | Minimum RAM | Recommended RAM |
 |---------------|-------------|-----------------|
-| Tesseract only | 512MB | 1GB |
+| Tesseract | 512MB | 1GB |
 | EasyOCR | 1.5GB | 2-4GB |
-
-### Cloud Provider Recommendations
-
-**Free Tier Options for EasyOCR (2GB+ RAM needed):**
-
-1. **Oracle Cloud Always Free** ⭐ **BEST**
-   - Ampere A1: 4 OCPUs + 24GB RAM (always free)
-   - Recommended: 2 OCPUs + 12GB RAM
-   -永久免费 (permanent free tier)
-
-2. **Google Cloud Platform**
-   - $300 credit (90 days)
-   - Use e2-medium (4GB RAM) during trial
-
-3. **AWS Free Tier**
-   - t2.micro (1GB RAM, marginal for Tesseract)
-   - 12-month free tier
-
-**For Tesseract (512MB-1GB RAM):**
-- Any budget VPS provider (DigitalOcean, Linode, Vultr)
-- Render, Railway (with paid plans)
 
 ### Production Checklist
 
@@ -470,12 +460,9 @@ uv add <package-name>
 
 # Sync dependencies
 uv sync
-
-# Regenerate requirements.txt for Docker
-uv pip compile pyproject.toml -o requirements.txt
 ```
 
-## License
+<!-- ## License
 
 MIT License - see LICENSE file for details
 
@@ -494,4 +481,4 @@ Contributions welcome! Please:
 
 ---
 
-Built with ❤️ using FastAPI, EasyOCR, and Tesseract
+Built with ❤️ using FastAPI, EasyOCR, and Tesseract -->
