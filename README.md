@@ -7,7 +7,8 @@ A FastAPI-based OCR service that extracts text from images using pluggable OCR e
 - 🔌 **Pluggable OCR Engines**: Switch between EasyOCR (deep learning, high accuracy) and Tesseract (lightweight, fast)
 - 🏭 **Factory Pattern**: Clean architecture with abstract base classes
 - ⚙️ **Configuration-Driven**: All settings managed via `config.json`
-- 🐳 **Docker Support**: Production-ready containerization with Docker Compose
+- �️ **Built-in Rate Limiting**: Configurable per-minute and per-hour request limits
+- �🐳 **Docker Support**: Production-ready containerization with Docker Compose
 - 📦 **Modern Tooling**: Built with Python 3.12+ and `uv` package manager
 - 🚀 **FastAPI**: Auto-generated OpenAPI docs, async support, type safety
 
@@ -142,6 +143,11 @@ All settings are managed in `config.json`:
   },
   "TESSERACT": {
     "LANGUAGE": "eng"                   // Language code: "eng", "fra", "deu"
+  },
+  "RATE_LIMIT": {
+    "ENABLED": true,                    // Enable/disable rate limiting
+    "REQUESTS_PER_MINUTE": 10,          // Max requests per minute per IP
+    "REQUESTS_PER_HOUR": 100            // Max requests per hour per IP
   }
 }
 ```
@@ -167,6 +173,35 @@ docker-compose restart
 # Stop with Ctrl+C, then restart
 uv run fastapi dev
 ```
+
+### Rate Limiting Configuration
+
+**Enable rate limiting** (recommended for production):
+```json
+"RATE_LIMIT": {
+  "ENABLED": true,
+  "REQUESTS_PER_MINUTE": 10,
+  "REQUESTS_PER_HOUR": 100
+}
+```
+
+**Disable rate limiting** (for development or unlimited access):
+```json
+"RATE_LIMIT": {
+  "ENABLED": false
+}
+```
+
+**Adjust limits** based on your server capacity:
+```json
+"RATE_LIMIT": {
+  "ENABLED": true,
+  "REQUESTS_PER_MINUTE": 20,   // More permissive
+  "REQUESTS_PER_HOUR": 500
+}
+```
+
+**Note:** Rate limits apply per IP address. Both minute and hour limits are enforced simultaneously.
 
 ## Usage
 
@@ -278,7 +313,16 @@ Extract text from uploaded image.
 **Status Codes:**
 - `200`: Success
 - `400`: Invalid file (format, size, or corrupted)
+- `429`: Too Many Requests (rate limit exceeded)
 - `500`: Server error (configuration or processing error)
+
+**Rate Limiting:**
+If rate limiting is enabled, requests exceeding the configured limits will receive:
+```json
+{
+  "error": "Rate limit exceeded: 10 per 1 minute"
+}
+```
 
 #### `GET /docs`
 Interactive API documentation (Swagger UI).
@@ -400,10 +444,11 @@ except json.JSONDecodeError:
 - [ ] Set `OCR_ENGINE` based on memory constraints
 - [ ] Configure `MAX_FILE_SIZE_BYTES` for your use case
 - [ ] Set `GPU: true` if GPU available (EasyOCR only)
+- [ ] Enable rate limiting: `RATE_LIMIT.ENABLED: true`
+- [ ] Adjust rate limits based on server capacity and expected traffic
 - [ ] Use volume mounts for models directory (Docker)
 - [ ] Enable health checks (included in docker-compose.yml)
 - [ ] Set up reverse proxy (nginx/Traefik) for HTTPS
-- [ ] Configure rate limiting (API Gateway or middleware)
 - [ ] Monitor memory usage (especially with EasyOCR)
 
 ## Troubleshooting
@@ -433,6 +478,12 @@ except json.JSONDecodeError:
 
 **6. "Model not found" error (EasyOCR)**
 - Ensure `models/` directory exists with `.pth` files
+
+**7. "Rate limit exceeded" (429 error)**
+- Check `config.json > RATE_LIMIT.ENABLED` is set to desired value
+- Increase limits: `REQUESTS_PER_MINUTE` or `REQUESTS_PER_HOUR`
+- For development, set `"ENABLED": false`
+- Rate limits are per IP address - use different IPs or wait for reset
 
 ### Development Tips
 

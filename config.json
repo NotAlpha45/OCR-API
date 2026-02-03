@@ -23,5 +23,10 @@
     },
     "TESSERACT": {
         "LANGUAGE": "eng"
+    },
+    "RATE_LIMIT": {
+        "ENABLED": true,
+        "REQUESTS_PER_MINUTE": 10,
+        "REQUESTS_PER_HOUR": 100
     }
 }
