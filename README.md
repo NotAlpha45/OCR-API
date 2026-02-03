@@ -173,10 +173,10 @@ uv run fastapi dev
 **Using cURL:**
 
 ```bash
-curl -X POST "http://localhost:8000/ocr/extract-text" \
-  -H "accept: application/json" \
-  -H "Content-Type: multipart/form-data" \
-  -F "image_file=@/path/to/image.jpg"
+    curl -X POST "http://localhost:8000/ocr/extract-text" \
+    -H "accept: application/json" \
+    -H "Content-Type: multipart/form-data" \
+    -F "image_file=@/path/to/image.jpg"
 ```
 
 **Using Python:**
