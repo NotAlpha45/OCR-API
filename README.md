@@ -4,13 +4,13 @@ A FastAPI-based OCR service that extracts text from images using pluggable OCR e
 
 ## Features
 
-- 🔌 **Pluggable OCR Engines**: Switch between EasyOCR (deep learning, high accuracy) and Tesseract (lightweight, fast)
-- 🏭 **Factory Pattern**: Clean architecture with abstract base classes
-- ⚙️ **Configuration-Driven**: All settings managed via `config.json`
-- �️ **Built-in Rate Limiting**: Configurable per-minute and per-hour request limits
-- �🐳 **Docker Support**: Production-ready containerization with Docker Compose
-- 📦 **Modern Tooling**: Built with Python 3.12+ and `uv` package manager
-- 🚀 **FastAPI**: Auto-generated OpenAPI docs, async support, type safety
+- **Pluggable OCR Engines**: Switch between EasyOCR (deep learning, high accuracy) and Tesseract (lightweight, fast)
+- **Factory Pattern**: Clean architecture with abstract base classes
+- **Configuration-Driven**: All settings managed via `config.json`
+- **Built-in Rate Limiting**: Configurable per-minute and per-hour request limits
+- **Docker Support**: Production-ready containerization with Docker Compose
+- **Modern Tooling**: Built with Python 3.12+ and `uv` package manager
+- **FastAPI**: Auto-generated OpenAPI docs, async support, type safety
 
 ## Table of Contents
 
@@ -119,6 +119,8 @@ Access the API at:
 - **API**: http://localhost:8000
 - **Interactive Docs**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
+
+Note, if you want to access the API in the deployed version in Render, use the following: https://ocr-api-uylo.onrender.com
 
 
 ## Configuration

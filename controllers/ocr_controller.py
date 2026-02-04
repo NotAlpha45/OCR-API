@@ -29,11 +29,15 @@ ocr_router = APIRouter(prefix="/ocr", tags=["OCR"])
 
 @ocr_router.post("/extract-text")
 @limiter.limit(
-    f"{config['RATE_LIMIT']['REQUESTS_PER_MINUTE']}/minute;{config['RATE_LIMIT']['REQUESTS_PER_HOUR']}/hour"
-    if config.get("RATE_LIMIT", {}).get("ENABLED", False)
-    else "1000000/minute"  # Effectively unlimited if disabled
+    limit_value=(
+        f"{config['RATE_LIMIT']['REQUESTS_PER_MINUTE']}/minute;{config['RATE_LIMIT']['REQUESTS_PER_HOUR']}/hour"
+        if config["RATE_LIMIT"]["ENABLED"]
+        else "1000000/minute"
+    )  # Effectively unlimited if disabled
 )
-async def extract_text(request: Request, image_file: UploadFile = File(...)) -> OcrOutput:
+async def extract_text(
+    request: Request, image_file: UploadFile = File(...)
+) -> OcrOutput:
     """
     Extract text from uploaded image using OCR.
 
