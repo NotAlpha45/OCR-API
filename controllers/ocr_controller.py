@@ -1,4 +1,7 @@
-from fastapi import APIRouter, File, HTTPException, UploadFile
+import json
+from fastapi import APIRouter, File, HTTPException, UploadFile, Request
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
 from data_types.ocr_types import OcrOutput
 from exceptions.ocr_exceptions import OcrConfigException
@@ -9,15 +12,37 @@ from utils.ocr_utils import (
 )
 
 
+# Load configuration
+try:
+    with open("config.json", "r") as config_file:
+        config = json.load(config_file)
+except FileNotFoundError:
+    raise OcrConfigException("Configuration file 'config.json' not found.")
+except json.JSONDecodeError:
+    raise OcrConfigException("Configuration file 'config.json' contains invalid JSON.")
+
+# Initialize rate limiter
+limiter = Limiter(key_func=get_remote_address)
+
 ocr_router = APIRouter(prefix="/ocr", tags=["OCR"])
 
 
 @ocr_router.post("/extract-text")
-async def extract_text(image_file: UploadFile = File(...)) -> OcrOutput:
+@limiter.limit(
+    limit_value=(
+        f"{config['RATE_LIMIT']['REQUESTS_PER_MINUTE']}/minute;{config['RATE_LIMIT']['REQUESTS_PER_HOUR']}/hour"
+        if config["RATE_LIMIT"]["ENABLED"]
+        else "1000000/minute"
+    )  # Effectively unlimited if disabled
+)
+async def extract_text(
+    request: Request, image_file: UploadFile = File(...)
+) -> OcrOutput:
     """
     Extract text from uploaded image using OCR.
 
     Args:
+        request: FastAPI request object (required for rate limiting)
         file: image file (max 10MB, allowed formats: jpg, jpeg, png, jfif)
     """
     image_content = await image_file.read()
